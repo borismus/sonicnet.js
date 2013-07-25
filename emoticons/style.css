@@ -1,27 +1,31 @@
 #container {
   margin: 0 auto;
+  text-align: center;
 }
 
 #received-emoticon {
   margin: 0 auto;
-  width: 100%;
-  min-height: 200px;
   margin-bottom: 10px;
   background: #eee;
+  width: 200px;
+  height: 200px;
 }
 
 .emoticon {
-  width: 100px;
+  width: 64px;
   padding: 14px;
   opacity: 0.6;
   border-radius: 10px;
   float: left;
-  -webkit-transition: opacity 0.3s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
   border: 2px solid transparent;
 }
 
 .emoticon:hover {
   opacity: 1;
+}
+.emoticon:active {
+  -webkit-transform: scale(1.2);
 }
 
 .emoticon.selected {
