@@ -26,7 +26,8 @@
 .emoticon {
   max-width: 128px;
   width: 25%;
-  padding: 3%;
+  padding: 2%;
+  margin: 1%;
   border-radius: 10px;
   float: left;
   -webkit-transition: -webkit-transform 0.1s ease-in-out;
