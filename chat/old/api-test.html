@@ -1,0 +1,23 @@
+<button id="message">Send Message</button>
+
+<script src="dist/ultranet.js"></script>
+<script>
+var VOCAB = '0123456789';
+var MESSAGE = '314159';
+
+var button = document.querySelector('#message');
+button.addEventListener('click', onButton);
+
+function onButton() {
+  usocket = new UltraSocket({alphabet: VOCAB});
+  usocket.send(MESSAGE);
+}
+
+// On some other machine:
+userver = new UltraServer({alphabet: VOCAB});
+userver.on('message', function(message) {
+  // message is '31415'. Do something with it.
+  console.log(message);
+});
+userver.start();
+</script>

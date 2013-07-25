@@ -1,0 +1,24 @@
+<button id="message">Send Message</button>
+
+<script src="build/sonicnet.js"></script>
+<script>
+var audioContext = new webkitAudioContext();
+var ALPHABET = '0123456789';
+var MESSAGE = '314159';
+
+var button = document.querySelector('#message');
+button.addEventListener('click', onButton);
+
+function onButton() {
+  ssocket = new SonicSocket({alphabet: ALPHABET, charDuration: 0.2});
+  ssocket.send(MESSAGE);
+}
+
+// On some other machine:
+sserver = new SonicServer({alphabet: ALPHABET});
+sserver.on('message', function(message) {
+  // message is '31415'. Do something with it.
+  console.log(message);
+});
+sserver.start();
+</script>

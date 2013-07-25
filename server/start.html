@@ -1,0 +1,31 @@
+<h1>Start Pairing</h1>
+<form action="#">
+<input>
+<button>Send</button>
+</form>
+
+<script src="pair-server.js"></script>
+<script>
+var form = document.querySelector('form');
+var input = document.querySelector('form input');
+// Generate a random token.
+var token = Math.round(Math.random() * 1000);
+// Connect to the pairing server.
+var pairServer = new PairServer();
+// Start the pairing process.
+// TODO: use the actual token.
+pairServer.on('ready', function() {
+  pairServer.start('hello');
+});
+// TODO: Send the token to the other device too.
+
+// When user submits the form, send a message.
+form.onsubmit = function(e) {
+  // Get content.
+  var message = input.value;
+  // Send through socket.
+  pairServer.send(message);
+  // Clear form.
+  input.value = '';
+};
+</script>

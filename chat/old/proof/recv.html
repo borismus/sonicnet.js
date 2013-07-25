@@ -1,0 +1,96 @@
+<!doctype html>
+
+<canvas></canvas>
+<div id="history">
+</div>
+
+<script src="sonic-coder.js"></script>
+<script>
+var coder = new SonicCoder();
+var context = new webkitAudioContext();
+var WIDTH = 640;
+var HEIGHT = 480;
+var PEAK_THRESHOLD = -65;
+// Setup a microphone listener.
+navigator.webkitGetUserMedia({audio: true}, onStream, onStreamError);
+
+function onStreamError(e) {
+  console.error('Audio input error:', e);
+}
+
+function onStream(stream) {
+  // Setup audio graph.
+  input = context.createMediaStreamSource(stream);
+  analyser = context.createAnalyser();
+  input.connect(analyser);
+  // Do an FFT and check for inaudible peaks.
+  requestAnimationFrame(getUltrasonicPeaks);
+}
+
+var lastHistory = null;
+var history = document.querySelector('#history');
+function getUltrasonicPeaks() {
+  drawContext.clearRect(0, 0, WIDTH, HEIGHT);
+  freqs = new Float32Array(analyser.frequencyBinCount);
+  analyser.getFloatFrequencyData(freqs);
+  // Plot the frequency data.
+  for (var i = 0; i < freqs.length; i++) {
+    var value = freqs[i];
+    // Transform this value (in db?) into something that can be plotted.
+    var height = value + 200;
+    var offset = HEIGHT - height - 1;
+    var barWidth = WIDTH/freqs.length;
+    drawContext.fillStyle = 'black';
+    drawContext.fillRect(i * barWidth, offset, 1, 1);
+  }
+  // Calculate the peaks in the 19KHz+ range.
+  var peak = getPeak(19000);
+  if (peak.amplitude > PEAK_THRESHOLD) {
+    var char = coder.freqToChar(peak.frequency);
+    if (char != null) {
+      history.innerHTML += char;
+      lastHistory = new Date();
+    }
+  }
+  if (new Date() - lastHistory > 2000) {
+    history.innerHTML = '';
+  }
+  requestAnimationFrame(getUltrasonicPeaks);
+}
+
+function getPeak(minFreq) {
+  // Find where to start.
+  var start = freq2index(minFreq);
+  // Just do a max over the set.
+  // TODO: use first derivative to find the peaks, and then find the largest peak.
+  var max = -Infinity;
+  var index = -1;
+  for (var i = start; i < freqs.length; i++) {
+    if (freqs[i] > max) {
+      max = freqs[i];
+      index = i;
+    }
+  }
+  return {
+    frequency: index2freq(index),
+    amplitude: max
+  }
+}
+
+function freq2index(frequency) {
+  var nyquist = context.sampleRate/2;
+  return Math.round(frequency/nyquist * freqs.length);
+}
+
+function index2freq(index) {
+  var nyquist = context.sampleRate/2;
+  return nyquist/freqs.length * index;
+}
+
+window.onload = function() {
+  canvas = document.querySelector('canvas');
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
+  drawContext = this.canvas.getContext('2d');
+}
+</script>

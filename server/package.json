@@ -1,0 +1,14 @@
+{
+  "name": "pair-ws",
+  "subdomain": "borismus-pair-ws",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.0.0-11",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {
+    "ws": ">= 0.4.x"
+  }
+}

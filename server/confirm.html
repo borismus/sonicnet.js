@@ -1,0 +1,28 @@
+<h1>Confirm Pairing</h1>
+<form action="#">
+<input>
+<button>Send</button>
+</form>
+
+<script src="pair-server.js"></script>
+<script>
+var form = document.querySelector('form');
+var input = document.querySelector('form input');
+// Connect to the pairing server.
+var pairServer = new PairServer();
+// Confirm the pairing process.
+// TODO: use the actual token received from the other device.
+pairServer.on('ready', function() {
+  pairServer.confirm('hello');
+});
+
+// When user submits the form, send a message.
+form.onsubmit = function(e) {
+  // Get content.
+  var message = input.value;
+  // Send through socket.
+  pairServer.send(message);
+  // Clear form.
+  input.value = '';
+};
+</script>

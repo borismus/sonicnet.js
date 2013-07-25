@@ -1,0 +1,57 @@
+<!doctype html>
+<input id="slider" type="range" min="19000" max="20500" onchange="changeFrequency()">
+<div id="value"></div>
+
+<form id="chat" action="#">
+<input id="message" type="text" placeholder="..." />
+</form>
+
+<script src="sonic-coder.js"></script>
+<script>
+
+var audioContext = new webkitAudioContext();
+var coder = new SonicCoder();
+
+function changeFrequency(f) {
+  var value = document.querySelector('input#slider').value;
+  osc.frequency.value = value;
+  document.querySelector('#value').innerHTML = value;
+}
+
+var chat = document.querySelector('#chat');
+chat.addEventListener('submit', function() {
+  console.log('submitted');
+  var freqQueue = [];
+  // Get the input.
+  var input = document.querySelector('input#message').value;
+  // Convert each character into a frequency.
+  for (var i = 0; i < input.length; i++) {
+    // Send each character, one by one, spending some amount of time on each.
+    var char = input[i];
+    var freq = coder.charToFreq(char);
+    freqQueue.push(freq);
+  }
+  freqQueue.push(coder.charToFreq('\n'));
+  // Flush the send queue.
+  sendAll(freqQueue);
+  // Clean the input box.
+  input.value = '';
+});
+
+
+var CHAR_SEND_DURATION = 0.3;
+function sendAll(queue) {
+  var osc = audioContext.createOscillator();
+  osc.connect(audioContext.destination);
+  osc.start(0);
+  // Use WAAPI to schedule the queue of frequencies.
+  for (var i = 0; i < queue.length; i++) {
+    var time = audioContext.currentTime + CHAR_SEND_DURATION * i;
+    osc.frequency.setValueAtTime(queue[i], time);
+  }
+  console.log(queue);
+  var stopTime = audioContext.currentTime + CHAR_SEND_DURATION * queue.length;
+  osc.stop(stopTime);
+}
+
+</script>
