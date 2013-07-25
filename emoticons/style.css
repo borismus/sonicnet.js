@@ -1,19 +1,23 @@
+* {
+  margin: 0; padding: 0;
+}
+
 #container {
   margin: 0 auto;
   text-align: center;
 }
 
 #received-emoticon {
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 10px auto;
   background: #eee;
   width: 200px;
   height: 200px;
 }
 
 .emoticon {
-  width: 64px;
-  padding: 14px;
+  max-width: 128px;
+  width: 25%;
+  padding: 3%;
   opacity: 0.6;
   border-radius: 10px;
   float: left;
