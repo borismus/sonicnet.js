@@ -27,18 +27,18 @@
   max-width: 128px;
   width: 25%;
   padding: 3%;
-  opacity: 0.6;
   border-radius: 10px;
   float: left;
-  -webkit-transition: all 0.1s ease-in-out;
+  -webkit-transition: -webkit-transform 0.1s ease-in-out;
   border: 2px solid transparent;
+  opacity: 0.5;
 }
 
 .emoticon:hover {
   opacity: 1;
 }
 .emoticon:active {
-  -webkit-transform: scale(1.2);
+  -webkit-transform: scale(0.9);
 }
 
 .emoticon.selected {
