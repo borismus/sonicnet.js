@@ -45,3 +45,8 @@
 .emoticon.selected {
   border-color: black;
 }
+
+#mobile-warning {
+  clear: both;
+  display: none;
+}
