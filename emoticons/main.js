@@ -1,6 +1,7 @@
 var EMOTICONS = ['happy', 'sad', 'heart', 'mad', 'star', 'oh'];
 // Calculate the alphabet based on the emoticons.
 var ALPHABET = generateAlphabet(EMOTICONS);
+var PLACEHOLDER = 'img/placeholder.gif';
 
 // Create an ultranet server.
 var sonicServer = new SonicServer({alphabet: ALPHABET, debug: false});
@@ -58,11 +59,18 @@ function createEmoticonList(list) {
 
 function onIncomingEmoticon(message) {
   console.log('message: ' + message);
-  // TODO(smus): Validate the message -- it has to be a single valid index.
   var index = parseInt(message);
   // Make the emoticon pop into view.
   var emoticonEl = document.querySelector('#received-emoticon');
-  emoticonEl.src = getIcon(EMOTICONS[index]);
+  // Validate the message -- it has to be a single valid index.
+  var isValid = (!isNaN(index) && 0 <= index && index < EMOTICONS.length);
+  if (isValid) {
+    emoticonEl.src = getIcon(EMOTICONS[index]);
+    emoticonEl.classList.remove('placeholder');
+  } else {
+    emoticonEl.classList.add('placeholder');
+    emoticonEl.src = PLACEHOLDER;
+  }
 }
 
 function getIcon(name) {
