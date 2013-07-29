@@ -3,13 +3,27 @@ var EMOTICONS = ['happy', 'sad', 'heart', 'mad', 'star', 'oh'];
 var ALPHABET = generateAlphabet(EMOTICONS);
 var PLACEHOLDER = 'img/placeholder.gif';
 
-// Create an ultranet server.
-var sonicServer = new SonicServer({alphabet: ALPHABET, debug: false});
-// Create an ultranet socket.
-var sonicSocket = new SonicSocket({alphabet: ALPHABET});
+var sonicSocket;
+var sonicServer;
 
-sonicServer.start();
-sonicServer.on('message', onIncomingEmoticon);
+createSonicNetwork();
+
+function createSonicNetwork(opt_coder) {
+  // Stop the sonic server if it is listening.
+  if (sonicServer) {
+    sonicServer.stop();
+  }
+  if (opt_coder) {
+    sonicServer = new SonicServer({coder: opt_coder});
+    sonicSocket = new SonicSocket({coder: opt_coder});
+  } else {
+    sonicServer = new SonicServer({alphabet: ALPHABET, debug: false});
+    sonicSocket = new SonicSocket({alphabet: ALPHABET});
+  }
+
+  sonicServer.start();
+  sonicServer.on('message', onIncomingEmoticon);
+}
 
 
 // Build the UI that lets you pick emoticons.
@@ -17,6 +31,37 @@ createEmoticonList(EMOTICONS);
 if (isMobile()) {
   document.querySelector('#mobile-warning').style.display = 'block';
 }
+
+var isAudibleEl = document.querySelector('#is-audible');
+isAudibleEl.addEventListener('click', function(e) {
+  if (e.target.checked) {
+    var coder = new SonicCoder({
+      freqMin: 440,
+      freqMax: 1760
+    });
+    createSonicNetwork(coder);
+  } else {
+    createSonicNetwork();
+  }
+});
+
+var isFullScreenEl = document.querySelector('#is-full-screen');
+isFullScreenEl.addEventListener('click', function(e) {
+  var selectEl = document.querySelector('#select-emoticon');
+  var recvEl = document.querySelector('#received-emoticon');
+  if (e.target.checked) {
+    selectEl.style.display = 'none';
+    recvEl.classList.add('big');
+  } else {
+    selectEl.style.display = 'block';
+    recvEl.classList.remove('big');
+  }
+});
+
+var isVisualizer = document.querySelector('#is-visualizer');
+isVisualizer.addEventListener('click', function(e) {
+  sonicServer.setDebug(e.target.checked);
+});
 
 function generateAlphabet(list) {
   var alphabet = '';

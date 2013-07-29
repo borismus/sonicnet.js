@@ -50,3 +50,23 @@
   clear: both;
   display: none;
 }
+
+#options {
+  clear: both;
+}
+
+#received-emoticon {
+  -webkit-transition: all 0.3s ease-in-out;
+  -webkit-transform-origin: 50% 0;
+  -webkit-transform: scale(1);
+}
+#received-emoticon.big {
+  -webkit-transform: scale(3);
+}
+
+/* Visualizer canvas */
+canvas {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
