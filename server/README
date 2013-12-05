@@ -1,0 +1,32 @@
+# How to use this server
+
+1. Get wscat (https://github.com/einaros/ws) via npm install ws
+2. Connect to the websocket (ws://borismus-pair-ws.nodejitsu.com:80)
+
+## Client A: Initiator
+
+1. Initiate a connection using token using the following command:
+
+    {"type": "start", "token": ...}
+
+2. Get the connection id from the response:
+
+    {"type": ..., "conn_id": X}
+
+3. Send messages via conn_id.
+
+    {"type": "message", "conn_id": X, "message": "hello world"}
+
+## Client B: Confirmer
+
+1. Confirm a token using the following command:
+
+    {"type": "confirm", "token": ...}
+
+2. Get the connection id from the response:
+
+    {"type": ..., "conn_id": X}
+
+3. Send messages via conn_id.
+
+    {"type": "message", "conn_id": X, "message": "hello world"}
