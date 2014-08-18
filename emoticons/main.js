@@ -1,3 +1,8 @@
+var SonicSocket = require('../lib/sonic-socket.js');
+var SonicServer = require('../lib/sonic-server.js');
+var SonicCoder = require('../lib/sonic-coder.js');
+
+
 var EMOTICONS = ['happy', 'sad', 'heart', 'mad', 'star', 'oh'];
 // Calculate the alphabet based on the emoticons.
 var ALPHABET = generateAlphabet(EMOTICONS);
