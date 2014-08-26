@@ -1,8 +1,11 @@
 function PairClient() {
   this.conn_id = null;
   // Create a websocket connection to the server.
-  //this.socket = new WebSocket('ws://localhost:8080');
-  this.socket = new WebSocket('ws://borismus-pair-ws.nodejitsu.com:80');
+  // NOTE(smus): I am no longer running the borismus-pair-ws nodejitsu
+  // instance, so to run this demo, you will need to clone the repository
+  // and run your own server locally.
+  this.socket = new WebSocket('ws://localhost:8080');
+  //this.socket = new WebSocket('ws://borismus-pair-ws.nodejitsu.com:80');
   this.socket.onmessage = this.onMessage_.bind(this);
   this.socket.onerror = this.onError_.bind(this);
 
@@ -93,4 +96,7 @@ PairClient.prototype.fire_ = function(callback, arg) {
 
 PairClient.prototype.onError_ = function(err) {
   console.error(err);
+  this.isServerError = true;
 };
+
+module.exports = PairClient;

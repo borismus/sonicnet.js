@@ -1,3 +1,8 @@
+var SonicSocket = require('../lib/sonic-socket.js');
+var SonicServer = require('../lib/sonic-server.js');
+var SonicCoder = require('../lib/sonic-coder.js');
+var PairClient = require('./pair-client.js');
+
 var ALPHABET = '0123456789';
 var TOKEN_LENGTH = 5;
 
@@ -27,6 +32,9 @@ function init() {
 function initPair() {
   // Generate a random pairing token.
   token = generateToken();
+  if (pairClient.isServerError) {
+    onServerError();
+  }
   // Setup a connection to the pairing server when it's ready.
   pairClient.on('ready', function() {
     pairClient.start(token);
@@ -126,6 +134,11 @@ function onConnected() {
 function onDisconnected() {
   // Show the overlay.
   document.querySelector('#overlay').style.display = 'block';
+}
+
+function onServerError() {
+  // Update the error dialog.
+  connectButton.querySelector('span').innerHTML = 'Server error!';
 }
 
 function getAuthorMessage(author, message) {

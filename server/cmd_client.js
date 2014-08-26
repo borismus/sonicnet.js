@@ -3,7 +3,9 @@
 // interactive mode.
 
 var WebSocket = require('ws');
-var ws = new WebSocket('ws://borismus-pair-ws.nodejitsu.com:80');
+// NOTE: No longer running this pairing server. Run the server locally.
+//var ws = new WebSocket('ws://borismus-pair-ws.nodejitsu.com:80');
+var ws = new WebSocket('ws://localhost:8080');
 
 if (process.argv.length != 3) {
   console.log('Usage: ./cmd_client.js <token>');

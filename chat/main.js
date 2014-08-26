@@ -1,3 +1,7 @@
+var SonicSocket = require('../lib/sonic-socket.js');
+var SonicServer = require('../lib/sonic-server.js');
+var SonicCoder = require('../lib/sonic-coder.js');
+
 var ALPHABET = ' abcdefghijklmnopqrstuvwxyz';
 // Create an ultranet server.
 var sonicServer = new SonicServer({alphabet: ALPHABET, debug: true});
